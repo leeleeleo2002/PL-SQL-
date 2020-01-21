@@ -1,0 +1,30 @@
+CREATE OR REPLACE PROCEDURE TEST AS 
+    
+    CURSOR 游標 IS
+    SELECT * FROM CUSTOMERS;
+    
+    游標容器 游標%ROWTYPE;
+    
+    SQLCODE_TEMP NUMBER(15);
+    SQLERRM_TEMP VARCHAR2(150);
+
+BEGIN
+
+  OPEN 游標;
+  LOOP
+  
+    FETCH 游標 INTO 游標容器;
+    EXIT WHEN 游標%NOTFOUND;
+    dbms_output.put_line(游標容器.CUST_ID);
+    
+  END LOOP;
+  CLOSE 游標;
+  
+  EXCEPTION 
+  WHEN OTHERS THEN
+   dbms_output.put_line(SQLCODE || ' ' || SQLERRM || ' ' || SYSDATE());
+    SQLCODE_TEMP := SQLCODE;
+    SQLERRM_TEMP := SQLERRM;
+    --INSERT INTO LOGS VALUES(SQLCODE_TEMP,SQLERRM_TEMP,SYSDATE());
+    --COMMIT;
+END TEST;
