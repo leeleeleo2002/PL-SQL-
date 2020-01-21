@@ -1,0 +1,117 @@
+SET SERVEROUTPUT ON; --開啟console顯示
+-----------------------------------------------
+
+
+DECLARE 
+    MESSAGE VARCHAR2(50) :='HELLO WORLD'; --變數宣告
+    NUM1 INTEGER := 100;
+    NUM2 REAL :=300;
+    NUM3 DOUBLE PRECISION := 3.111;
+
+BEGIN --程式撰寫開始區域
+
+    DBMS_OUTPUT.PUT_LINE(MESSAGE); --前方可加SYS.
+    DBMS_OUTPUT.PUT_LINE(NUM1);
+    DBMS_OUTPUT.PUT_LINE(NUM2);
+    DBMS_OUTPUT.PUT_LINE(NUM3);
+  
+END; --程式結束節點
+/
+
+---------------------------------------------------
+
+
+DECLARE 
+    SUBTYPE  name IS VARCHAR2(15); --自行定義型別
+    SUBTYPE  message IS VARCHAR2(6);
+    
+    name1 name := 'Hello';  --宣告類型
+    message1 message := 'World';
+BEGIN
+    dbms_output.put_line( name1 || ' ' || message1);
+END;
+/
+
+------------------------------------------------------
+
+
+DECLARE
+   -- 常數的宣告constant
+   pi constant number := 3.141592654;
+   
+   -- 其他宣告
+   radius number(5,2); 
+   dia number(5,2); 
+   circumference number(7, 2);
+   area number (10, 2);
+   
+BEGIN
+
+   -- 賦予值
+   radius := 9.5; 
+   dia := radius * 2; 
+   circumference := 2.0 * pi * radius;
+   area := pi * radius * radius;
+   
+   -- 輸出
+   dbms_output.put_line('Radius: ' || radius);
+   dbms_output.put_line('Diameter: ' || dia);
+   dbms_output.put_line('Circumference: ' || circumference);
+   dbms_output.put_line('Area: ' || area);
+   
+END;
+/
+----------------------------------------------------------------------
+
+DECLARE
+PROCEDURE compare (value  varchar2,  pattern varchar2 ) is
+BEGIN
+   IF value LIKE pattern THEN
+      dbms_output.put_line ('True');
+   ELSE
+      dbms_output.put_line ('False');
+   END IF;
+END;
+
+BEGIN
+   compare('Zara Ali', 'Z%A_i');
+   compare('Nuha Ali', 'Z%A_i');
+END;
+/
+---------------------------------------------------------------------
+IF - THEN 語句
+
+DECLARE
+   a number(2) := 10;
+BEGIN
+   a:= 10;
+  -- 布林值判斷
+   IF( a < 20 ) THEN
+      -- 輸出
+      dbms_output.put_line('a is less than 20 ' );
+   END IF;
+      dbms_output.put_line('value of a is : ' || a);
+END;
+/
+-----------------------------------------------------------------------
+
+獲取表單內的欄位
+
+DECLARE
+   c_id customers.id%type := 1;
+   c_sal  customers.salary%type;
+BEGIN
+   SELECT  salary 
+   INTO  c_sal
+   FROM customers
+   WHERE id = c_id;
+   
+   IF (c_sal <= 2000) THEN
+      UPDATE customers 
+      SET salary =  salary + 1000
+         WHERE id = c_id;
+      dbms_output.put_line ('Salary updated');
+   END IF;
+END;
+/
+--------------------------------------------------------------
