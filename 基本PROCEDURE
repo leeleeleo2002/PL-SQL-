@@ -1,30 +1,30 @@
-CREATE OR REPLACE PROCEDURE TEST AS 
+CREATE OR REPLACE PROCEDURE TEST AS    --PROCEDURE基本宣告
     
-    CURSOR 游標 IS
+    CURSOR 游標 IS                     --將游標指定到哪個表
     SELECT * FROM CUSTOMERS;
     
-    游標容器 游標%ROWTYPE;
+    游標容器 游標%ROWTYPE;              --將游標放置游標參數中
     
-    SQLCODE_TEMP NUMBER(15);
+    SQLCODE_TEMP NUMBER(15);           --存放EXCEPTION的變數 
     SQLERRM_TEMP VARCHAR2(150);
 
 BEGIN
 
-  OPEN 游標;
-  LOOP
+  OPEN 游標;                            --打開游標
+  LOOP                                  --迴圈開始
   
-    FETCH 游標 INTO 游標容器;
-    EXIT WHEN 游標%NOTFOUND;
-    dbms_output.put_line(游標容器.CUST_ID);
+    FETCH 游標 INTO 游標容器;           --將游標存放至游標容器
+    EXIT WHEN 游標%NOTFOUND;            --游標到底時跳出迴圈
+    dbms_output.put_line(游標容器.CUST_ID); --利用游標容器.欄位
     
-  END LOOP;
-  CLOSE 游標;
+  END LOOP;                             --結束迴圈
+  CLOSE 游標;                           --關閉游標
   
-  EXCEPTION 
-  WHEN OTHERS THEN
+  EXCEPTION                             --例外處理
+  WHEN OTHERS THEN                      --類似JAVA的抓所有EXCEPTION
    dbms_output.put_line(SQLCODE || ' ' || SQLERRM || ' ' || SYSDATE());
     SQLCODE_TEMP := SQLCODE;
     SQLERRM_TEMP := SQLERRM;
     --INSERT INTO LOGS VALUES(SQLCODE_TEMP,SQLERRM_TEMP,SYSDATE());
     --COMMIT;
-END TEST;
+END TEST;  
